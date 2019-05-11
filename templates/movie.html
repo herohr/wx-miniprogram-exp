@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+		<link href="https://cdn.bootcss.com/twitter-bootstrap/3.4.1/css/bootstrap-theme.min.css" rel="stylesheet">
+		<link href="https://cdn.bootcss.com/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+		<script src="https://cdn.bootcss.com/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <title>小鸭子电影</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <h1 class="text-primary" align="center">电影列表</h1>
+        </div>
+        <div class="row">
+            <div class="">
+                <ul id="movies-view">
+                  <div v-for="movie in movies">
+                      <div class="row">
+                          <div class="col-md-3">
+                            <img v-bind:src="source + 'static/imgs/' + movie.id + '.jpg'" v-bind:alt="movie.name" height="50%" width="50%">
+                            </div>
+
+                            <div class="col-md-6">
+                                <h3 class="text-primary">[[movie.name ]]</h3>
+                                <h4 class="text-default">导演：[[ movie.actor ]]</h4>
+                            </div>
+
+                            <div class="col-md-3">
+
+                                <button class="btn btn-primary btn-lg" v-on:click="giveStar" v-bind:id="movie.id" >[[ movie.star ]]赞</button>
+                            </div>
+                      </div>
+                      <br/>
+                  </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+<script>
+    var source = "http://localhost:8000/";
+    $.get(source + "api/movie/", function(resp){
+        var data = JSON.parse(resp);
+        console.log(data.movies[0].name);
+
+        var vue = new Vue({
+        el: "#movies-view",
+        delimiters: ['[[', ']]'],
+        methods: {
+            giveStar: function(e){
+                movie_id = e.target.id;
+
+                console.log(movie_id);
+                $.post(source + "api/movie/star/",{
+                    movie_id: movie_id
+                },function(response){
+                    console.log(response);
+                    let data = JSON.parse(response);
+                    alert("点赞成功:，目前点赞数：" + data.star)
+                });
+                data.movies[movie_id - 1].star += 1;
+            }
+        },
+        data: {
+            movies: data.movies,
+            source: source
+        }
+    })
+    });
+
+
+</script>
+
+</body>
+</html>

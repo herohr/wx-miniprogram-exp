@@ -3,7 +3,7 @@ from w import s
 import os
 
 # s = 'qweqwe"../../static/icos/guess-u-like.png"eeee'
-host = "https://request-wx.xiaoyaz.xyz:8080"
+host = "https://request-wx.xiaoyaz.xyz/wx-moviestar"
 
 
 def replace(data):
@@ -21,6 +21,8 @@ def replace(data):
     return result
 
 
+# "cd /home/ubuntu/wx-miniprogram-exp/myapp/static/"
+
 for root, dirs, names in os.walk("asd/"):
     for name in names:
         path = root + "/" + name
@@ -34,7 +36,7 @@ for root, dirs, names in os.walk("asd/"):
             with open(path, "w") as f:
                 f.write(d)
 
-replace(s)
+# replace(s)
 
 
 # for i in filenames:
